@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-      <div class="section main">
+      <div class="section main snapped">
         <div class="grid-container">
           <div class="grid">
             <!-- Grid squares will be generated with different colors and sizes -->
@@ -250,10 +250,59 @@
       </div>
     </div>
     <script>
-      // Automatically scroll to section 2 when page loads
       window.addEventListener("load", function () {
-        const section2 = document.querySelector(".main");
-        section2.scrollIntoView({ behavior: "instant" });
+        let main = document.querySelector(".main");
+        let scroller = document.querySelector(".container");
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarWidth = sidebar.offsetWidth;
+        console.log(sidebarWidth);
+        let containerChildren = [main, sidebar];
+
+        // Start with .main scrolled into view
+        main.scrollIntoView({ behavior: "instant" });
+
+        // if we aren't clicking on the sidebar, and main is not snapped
+        // scroll back to main
+        scroller.onpointerup = (event) => {
+          if (!sidebar.contains(event.target) && !main.classList.contains("snapped")) {
+            main.scrollIntoView({ behavior: "smooth" });
+          }
+        };
+
+        console.log("onscrollend" in scroller);
+
+        if (!("onscrollsnapchange" in scroller)) {
+          scroller.onscroll = (event) => {
+            console.log("onscroll", scroller.scrollLeft);
+
+            if (scroller.onscrollsnapchange) {
+              if (Math.abs(scroller.scrollLeft) <= 2) {
+                scroller.onscrollsnapchange({
+                  snapTargetInline: scroller.scrollLeft == sidebarWidth ? main : sidebar,
+                });
+              } else if (Math.abs(scroller.scrollLeft - sidebarWidth) <= 2) {
+                scroller.onscrollsnapchange({
+                  snapTargetInline: scroller.scrollLeft == sidebarWidth ? main : sidebar,
+                });
+              }
+            }
+          };
+        }
+
+        scroller.onscrollsnapchange = (event) => {
+          console.log("onscrollsnapchange");
+          scroller.querySelector(":scope .snapped")?.classList.remove("snapped");
+          event.snapTargetInline.classList.add("snapped");
+          containerChildren.forEach((child) => {
+            if (child !== event.snapTargetInline) {
+              child.ariaHidden = true;
+              child.inert = true;
+            } else {
+              child.ariaHidden = false;
+              child.inert = false;
+            }
+          });
+        };
       });
     </script>
   </body>
