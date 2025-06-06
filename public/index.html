@@ -255,7 +255,6 @@
         let scroller = document.querySelector(".container");
         let sidebar = document.querySelector(".sidebar");
         let sidebarWidth = sidebar.offsetWidth;
-        console.log(sidebarWidth);
         let containerChildren = [main, sidebar];
 
         // Start with .main scrolled into view
@@ -269,12 +268,8 @@
           }
         };
 
-        console.log("onscrollend" in scroller);
-
         if (!("onscrollsnapchange" in scroller)) {
           scroller.onscroll = (event) => {
-            console.log("onscroll", scroller.scrollLeft);
-
             if (scroller.onscrollsnapchange) {
               if (Math.abs(scroller.scrollLeft) <= 2) {
                 scroller.onscrollsnapchange({
