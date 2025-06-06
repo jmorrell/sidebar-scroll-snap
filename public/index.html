@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=0, user-scalable=0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hello, World!</title>
     <link rel="stylesheet" href="index.css" />
     <link rel="stylesheet" href="filler.css" />
@@ -134,13 +134,13 @@
       <div class="section main snapped">
         <div class="grid-container">
           <div class="grid-header">
-            <div class="menu-icon-button">
+            <button class="menu-icon-button" aria-label="Open sidebar menu" type="button">
               <div class="hamburger-icon">
                 <span></span>
                 <span></span>
                 <span></span>
               </div>
-            </div>
+            </button>
           </div>
           <div class="grid">
             <!-- Grid squares will be generated with different colors and sizes -->
@@ -280,14 +280,33 @@
           }
         };
 
-        header.ontouchend = (event) => {
-          console.log("header clicked");
-          document.querySelector(".grid-container").scrollTo({ top: 0, behavior: "smooth" });
-        };
-
         menuButton.onclick = (event) => {
           if (main.classList.contains("snapped")) {
             sidebar.scrollIntoView({ behavior: "smooth" });
+          }
+        };
+
+        menuButton.ontouchend = (event) => {
+          event.preventDefault();
+          if (main.classList.contains("snapped")) {
+            console.log("touchend: main is snapped, scrolling to sidebar");
+            sidebar.scrollIntoView({ behavior: "smooth" });
+          }
+        };
+
+        menuButton.onkeydown = (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            if (main.classList.contains("snapped")) {
+              sidebar.scrollIntoView({ behavior: "smooth" });
+            }
+          }
+        };
+
+        // Handle Escape key to dismiss sidebar
+        document.onkeydown = (event) => {
+          if (event.key === "Escape" && sidebar.classList.contains("snapped")) {
+            main.scrollIntoView({ behavior: "smooth" });
           }
         };
 
