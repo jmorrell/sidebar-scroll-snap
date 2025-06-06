@@ -7,6 +7,7 @@
 body {
   font-family: "Inter", sans-serif;
   overscroll-behavior-y: none;
+  background: #2a2a2a;
 }
 
 .container {
@@ -32,9 +33,19 @@ body {
   color: white;
 }
 
+@keyframes animate-it {
+  from {
+    filter: blur(6px) brightness(40%) contrast(0.8);
+  }
+  to {
+    filter: blur(0px) brightness(100%) contrast(1);
+  }
+}
+
 .main {
+  animation: animate-it linear;
+  animation-timeline: scroll(nearest x);
   background: #2a2a2a;
-  padding: 0;
   overflow: hidden;
 }
 
@@ -46,23 +57,10 @@ body {
   padding: 20px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-  overscroll-behavior-y: none;
-}
-
-.grid-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.grid-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.grid-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
 }
 
 .sidebar {
+  z-index: 1;
   min-width: 300px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 0;
@@ -79,24 +77,6 @@ body {
   gap: 32px;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: thin;
+  scrollbar-width: none;
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-  overscroll-behavior-y: none;
-}
-
-.sidebar-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar-content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
-}
-
-.sidebar-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
 }
