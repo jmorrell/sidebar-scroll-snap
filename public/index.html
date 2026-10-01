@@ -287,9 +287,7 @@
         };
 
         menuButton.ontouchend = (event) => {
-          event.preventDefault();
           if (main.classList.contains("snapped")) {
-            console.log("touchend: main is snapped, scrolling to sidebar");
             sidebar.scrollIntoView({ behavior: "smooth" });
           }
         };
@@ -316,36 +314,28 @@
           // if we've scrolled away from the main section, remove snapped
           if (Math.abs(scrollLeft - sidebarWidth) <= 80) {
             main.classList.remove("snapped");
-            main.inert = true;
-            main.ariaHidden = true;
-            sidebar.inert = false;
-            sidebar.ariaHidden = false;
           }
 
           // if we've scrolled away from the sidebar, remove snapped
           if (Math.abs(scrollLeft) > 80) {
             sidebar.classList.remove("snapped");
-            sidebar.inert = false;
-            sidebar.ariaHidden = false;
-            main.inert = true;
-            main.ariaHidden = true;
           }
 
           // If we've snapped to the sidebar, add snapped
           if (Math.abs(scrollLeft) <= 10) {
             sidebar.classList.add("snapped");
+            main.classList.remove("snapped");
             sidebar.inert = false;
             sidebar.ariaHidden = false;
             main.inert = true;
             main.ariaHidden = true;
-            main.classList.remove("snapped");
           } else if (Math.abs(scrollLeft - sidebarWidth) <= 10) {
             main.classList.add("snapped");
+            sidebar.classList.remove("snapped");
             main.inert = false;
             main.ariaHidden = false;
             sidebar.inert = true;
             sidebar.ariaHidden = true;
-            sidebar.classList.remove("snapped");
           }
         };
       });
